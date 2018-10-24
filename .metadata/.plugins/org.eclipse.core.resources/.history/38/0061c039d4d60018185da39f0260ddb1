@@ -1,0 +1,15 @@
+package database;
+
+public class main {
+
+	public static void main(String[] args) {
+		String newLine = System.getProperty("line.separator");
+		DatabaseController cont = new DatabaseController();
+		System.out.println("Scenes:");
+		cont.getAllScenes();
+		System.out.println(newLine+"By Scene");
+		cont.getSceneByName("Scene:1");
+		
+	}
+
+}

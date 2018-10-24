@@ -1,0 +1,113 @@
+package database;
+import java.sql.*;
+import java.util.*;
+
+
+public class DatabaseController {
+    private final String url = "jdbc:postgresql://pgserver.mah.se/mscheduler";
+    private final String user = "ai0923";
+    private final String password = "bgm9o0w2";
+ 
+    /**
+     * Connect to the PostgreSQL database
+     *
+     * @return a Connection object
+     * @throws java.sql.SQLException
+     */
+    public Connection connect() throws SQLException {
+        return DriverManager.getConnection(url, user, password);
+    }
+    
+    public void getSceneByName(String n) {
+    	 
+        String SQL = "SELECT * FROM scene join band on scene.BandId=band.BandId where SceneName=? order by Time";
+ 
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+ 
+            pstmt.setString(1, n);
+            ResultSet rs = pstmt.executeQuery();
+            displayScene(rs);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public void getBandByName(String n) {
+   	 
+        String SQL = "SELECT * FROM scene join band on scene.BandId=band.BandId where BandName=? order by Time";
+ 
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+ 
+            pstmt.setString(1, n);
+            ResultSet rs = pstmt.executeQuery();
+            displayBandTimes(rs);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    /**
+     * Display query
+     *
+     * @param rs
+     * @throws SQLException
+     */	
+    private void displayScene(ResultSet rs) throws SQLException {
+    	String newLine = System.getProperty("line.separator");
+    	rs.next();
+    	System.out.println(rs.getString("SceneName") + newLine
+                + rs.getString("BandName") +  "\t"
+                + rs.getString("Time") + ":00");
+        while (rs.next()) {
+            System.out.println(rs.getString("BandName") +  "\t"
+                     + rs.getString("Time") + ":00");
+        }
+    }
+    
+    /**
+     * Display query
+     *
+     * @param rs
+     * @throws SQLException
+     */	
+    private void displayBandTimes(ResultSet rs) throws SQLException {
+    	String newLine = System.getProperty("line.separator");
+    	rs.next();
+    	System.out.println(rs.getString("BandName")+ newLine
+                + rs.getString("SceneName") +  "\t"
+                + rs.getString("Time") + ":00");
+        while (rs.next()) {
+            System.out.println(rs.getString("SceneName") + "\t"
+                     + rs.getString("Time") + ":00");
+        }
+    }
+    
+    public void getAllScenes() {
+   	 
+        String SQL = "SELECT SceneName FROM scene group by SceneName";
+ 
+        try (Connection conn = connect();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(SQL)) {
+            // display scene information
+            displayScenes(rs);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    /**
+     * Display query
+     *
+     * @param rs
+     * @throws SQLException
+     */	
+    private void displayScenes(ResultSet rs) throws SQLException {
+        while (rs.next()) {
+            System.out.println(rs.getString("SceneName")); 
+        }
+    }
+}
+

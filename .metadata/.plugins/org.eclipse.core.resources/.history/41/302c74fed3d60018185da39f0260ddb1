@@ -1,0 +1,14 @@
+package database;
+
+public class main {
+
+	public static void main(String[] args) {
+		DatabaseController cont = new DatabaseController();
+		System.out.println("Scenes:");
+		cont.getAllScenes();
+		System.out.println("By Scene");
+		cont.getSceneByName("Scene:1");
+		
+	}
+
+}

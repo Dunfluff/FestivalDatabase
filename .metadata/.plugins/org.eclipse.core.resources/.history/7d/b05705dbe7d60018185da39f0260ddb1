@@ -1,0 +1,19 @@
+package database;
+
+public class main {
+
+	public static void main(String[] args) {
+		String newLine = System.getProperty("line.separator");
+		DatabaseController cont = new DatabaseController();
+		System.out.println("Scenes:");
+		cont.getAllScenes();
+		System.out.println(newLine+"Search by Scene");
+		cont.getSceneByName("Scene:1");
+		System.out.println(newLine+"Search by Band");
+		cont.getBandByName("Band:1");
+		cont.getSceneByName("Scene:2");
+		
+		
+	}
+
+}
