@@ -1,0 +1,83 @@
+\c mscheduler;
+
+
+drop table if exists Scene cascade;
+
+drop table if exists Band cascade;
+
+drop table if exists Worker cascade;
+
+drop table if exists Members cascade;
+drop table if exists Musician cascade;
+drop table if exists Preformance cascade;
+
+create table Scene(
+SceneId integer primary key,
+SceneName text
+);
+
+create table Worker(
+WorkId integer primary key,
+PerNum integer,
+addr text
+);
+
+create table Band(
+BandId integer primary key,
+WorkId integer,
+BandName text,
+origin text,
+foreign key (WorkId) references Worker(WorkId)
+);
+
+create table Preformance(
+SceneId integer,
+StartTime time,
+EndTime time,
+BandId integer,
+foreign key (BandId) references Band(BandId),
+foreign key (SceneId) references Scene(SceneId)
+);
+
+create table Musician(
+MusId integer primary key,
+Info text,
+MusicianName text
+);
+
+create table Members(
+BandId integer,
+MusId integer,
+foreign key (BandId) references Band(BandId),
+foreign key (MusId) references Musician(MusId)
+);
+
+
+insert into scene(SceneId, SceneName) values(1,'Scene:1');
+insert into scene(SceneId, SceneName) values(2,'Scene:2');
+insert into scene(SceneId, SceneName) values(3,'Scene:3');
+insert into scene(SceneId, SceneName) values(4,'Scene:4');
+insert into worker(WorkId, PerNum, addr) values(1,123456,'Address test 1');
+insert into worker(WorkId, PerNum, addr) values(2,123456,'Address test 2');
+insert into worker(WorkId, PerNum, addr) values(3,123456,'Address test 3');
+insert into band(BandId, WorkId, BandName, origin) values(1,1,'Band:1','Sverige');
+insert into band(BandId, WorkId, BandName, origin) values(2,2,'Band:2','Tyskland');
+insert into band(BandId, WorkId, BandName, origin) values(3,3,'Band:3','Polen');
+insert into preformance(SceneId, BandId, StartTime, EndTime) values(1,1,'13:00','14:00');
+insert into preformance(SceneId, BandId, StartTime, EndTime) values(1,2,'14:00','15:00');
+insert into preformance(SceneId, BandId, StartTime, EndTime) values(1,3,'15:00','16:00');
+insert into preformance(SceneId, BandId, StartTime, EndTime) values(2,3,'13:00','14:00');
+insert into preformance(SceneId, BandId, StartTime, EndTime) values(2,1,'14:00','15:00');
+insert into preformance(SceneId, BandId, StartTime, EndTime) values(2,2,'15:00','16:00');
+insert into preformance(SceneId, BandId, StartTime, EndTime) values(3,2,'13:00','14:00');
+insert into preformance(SceneId, BandId, StartTime, EndTime) values(3,3,'14:00','15:00');
+insert into preformance(SceneId, BandId, StartTime, EndTime) values(3,1,'15:00','16:00');
+insert into Musician(MusId, Info, MusicianName) values(1,'spelar cello','Fylking');
+insert into Musician(MusId, Info, MusicianName) values(2,'spelar Bas','Råger');
+insert into Musician(MusId, Info, MusicianName) values(3,'spelar Trummor','Titti');
+insert into Members(BandId, MusId) values(1,1);
+insert into Members(BandId, MusId) values(1,2);
+insert into Members(BandId, MusId) values(1,3);
+insert into Members(BandId, MusId) values(2,2);
+insert into Members(BandId, MusId) values(3,3);
+insert into Members(BandId, MusId) values(3,1);
