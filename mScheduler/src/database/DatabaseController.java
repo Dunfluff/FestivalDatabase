@@ -36,6 +36,30 @@ public class DatabaseController {
 		get.getMemberInfoByName(string);
 		
 	}
+	
+	public void setBand(String string) {
+		set.setBand();
+	}
+	
+	public void setWorker(String string) {
+		set.setWorker();
+	}
+	
+	public void setScene(String string) {
+		set.setScenes();
+	}
 
+	public void setPerformance(String string) {
+		set.setPerformance();
+	}
+	
+	public void setMusician(String string) {
+		set.setMusician();
+	}
+	
+	public void setMembers(String string) {
+		set.setMembers();
+	}
 }
+
 

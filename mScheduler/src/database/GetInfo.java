@@ -15,6 +15,7 @@ public class GetInfo {
 	private String user;
 	private String password;
 	private SysoDisplay disp;
+	private VisitorGui visitor;
 
 	public GetInfo(String url, String user, String password){
 		this.url = url;

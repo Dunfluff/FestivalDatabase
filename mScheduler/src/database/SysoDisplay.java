@@ -7,7 +7,6 @@ public class SysoDisplay {
 	String newLine = System.getProperty("line.separator");
 	
 	
-	
 	/**
      * Display Scene times
      *
@@ -15,7 +14,7 @@ public class SysoDisplay {
      * @throws SQLException
      */	
     public void displayScene(ResultSet rs) throws SQLException {
-;
+
     	rs.next();
     	System.out.println(rs.getString("SceneName") + newLine
                 + rs.getString("BandName") +  "\t"
@@ -71,5 +70,12 @@ public class SysoDisplay {
         while (rs.next()) {
             System.out.println(rs.getString("BandName"));
         }
+	}
+
+	public void displayWorker(ResultSet rs) throws SQLException {
+		while (rs.next()) {
+			System.out.println(rs.getString("WorkId"));
+		}
+		
 	}
 }
