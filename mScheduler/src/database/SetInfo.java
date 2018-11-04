@@ -16,142 +16,175 @@ public class SetInfo {
 	private int[] nextId;
 	private SysoDisplay disp;
 
-	public SetInfo(String url, String user, String password){
+	public SetInfo(String url, String user, String password) {
 		this.url = url;
 		this.user = user;
 		this.password = password;
 		nextId = new int[4];
 	}
-	
+
 	/**
-     * Connect to the PostgreSQL database
-     *
-     * @return a Connection object
-     * @throws java.sql.SQLException
-     */
-    public Connection connect() throws SQLException {
-        return DriverManager.getConnection(url, user, password);
-    }
-    
-    
-    
-    private void getNext(){
-    	nextId = new int[4];
-        List<String> next = new ArrayList<String>();
-    	next.add("SELECT count(Band) FROM band");
-    	next.add("SELECT count(Scene) FROM Scene");
-    	next.add("SELECT count(Worker) FROM worker");
-    	next.add("SELECT count(Musician) FROM Musician");
-    	int i = 0;
-    	for(String n : next){
-        	try (Connection conn = connect();
-                    Statement stmt = conn.createStatement();
-                    ResultSet rs = stmt.executeQuery(n)) {
-                rs.next();
-                nextId[i++]=rs.getInt(1);
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-    	}	
-    }
-    
-    public void setBand() {
-    	
-    	String SQL = "INSERT INTO band VALUES (19, 2, 'Prince', 'Kazaks')";
-    	System.out.println("Test Sara2");
-    	
-    	try (Connection conn = connect();
-    			Statement stmt = conn.createStatement();
-    			ResultSet rs = stmt.executeQuery(SQL)) {
-    		disp.displayScenes(rs);
-    		
-    	} catch (SQLException ex) {
-    		System.out.println(ex.getMessage());
-    	}
-}
+	 * Connect to the PostgreSQL database
+	 *
+	 * @return a Connection object
+	 * @throws java.sql.SQLException
+	 */
+	public Connection connect() throws SQLException {
+		return DriverManager.getConnection(url, user, password);
+	}
 
+	private void getNext() {
+		nextId = new int[4];
+		List<String> next = new ArrayList<String>();
+		next.add("SELECT count(Band) FROM band");
+		next.add("SELECT count(Scene) FROM Scene");
+		next.add("SELECT count(Worker) FROM worker");
+		next.add("SELECT count(Musician) FROM Musician");
+		int i = 0;
+		for (String n : next) {
+			try (Connection conn = connect();
+					Statement stmt = conn.createStatement();
+					ResultSet rs = stmt.executeQuery(n)) {
+				rs.next();
+				nextId[i++] = rs.getInt(1);
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
+	}
 
-    
-    
-    public void setWorker() {
-    	
-    	String SQL = "INSERT INTO worker VALUES (4, 567891, 'Matgatan 7')";
-    	System.out.println(" Hut hut");
-    	
-    	try (Connection conn = connect();
-    			Statement stmt = conn.createStatement();
-    			ResultSet rs = stmt.executeQuery(SQL)) {
-    		disp.displayWorker(rs);
-    	} catch (SQLException ex) {
-    		System.out.println(ex.getMessage());
-    	}
-    	
-    }
-    
-    public void setScenes() {
-    	
-    	String SQL = "INSERT INTO scene VALUES (5, 'Big Heavy')";
-    	System.out.println(" Try Setting scenes" );
-    	
-    	try (Connection conn = connect();
-    			Statement stmt = conn.createStatement();
-    			ResultSet rs = stmt.executeQuery(SQL)) {
-    		disp.displayScenes(rs);
-    	} catch (SQLException ex) {
-    		System.out.print(ex.getMessage());
-    	}
-    	
-    }
-    
-    public void setPerformance() {
-    	
-    	String SQL = "INSERT INTO preformance VALUES (5, '14:30:00', '15:30:00', 7)";
-    	System.out.println("Try booking performance");
-    	
-    	try (Connection conn = connect();
-    			Statement stmt = conn.createStatement();
-    			ResultSet rs = stmt.executeQuery(SQL)) {
-    		disp.displayWorker(rs);
-    	} catch (SQLException ex) {
-    		System.out.println(ex.getMessage());
-    	}
-    }
-    
-    public void setMusician() {
-    	
-    	String SQL = "INSERT INTO musician VALUES (4, 'rockar triangeln', 'Rupert')";
-    	System.out.println("Try adding musician");
-    	
-    	try (Connection conn = connect();
-    			Statement stmt = conn.createStatement();
-    			ResultSet rs = stmt.executeQuery(SQL)) {
-    		disp.displayWorker(rs);
-    	} catch (SQLException ex) {
-    		System.out.println(ex.getMessage());
-    	}
-    }
-    
-    public void setMembers() {
-    	
-    	String SQL = "INSERT INTO members VALUES (7, 4)";
-    	System.out.println("Try adding members2");
-    	
-    	try (Connection conn = connect();
-    			Statement stmt = conn.createStatement();
-    			ResultSet rs = stmt.executeQuery(SQL)) {
-    		disp.displayScenes(rs);
-    	} catch (SQLException ex) {
-    		System.out.println(ex.getMessage());
-    	}
-    	
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+	public void insertBandIntoTables(Band band) {
+		
+
+		PreparedStatement ps = null;
+
+		String SQL = "INSERT INTO band" + "(bandid, workid, bandname, origin) VALUES" + "(?, ?, ?, ?)";
+		
+		System.out.println(band.getName());
+		System.out.println(band.getOrigin());
+
+		try (Connection conn = connect()) {
+			ps = conn.prepareStatement(SQL);
+			ps.setInt(1, band.getId());
+			ps.setInt(2, 2);
+			ps.setString(3, band.getName());
+			ps.setString(4, band.getOrigin());
+			ps.executeUpdate();
+			System.out.println("info set into the band");
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+
+	}
+	
+	public void insertWorkerIntoTables(Worker worker) {
+		
+		PreparedStatement ps = null;
+		
+		String SQL = "INSERT INTO worker" + "(workid, pernum, addr) VALUES" + "(?, ?, ?)";
+		
+		try (Connection conn = connect()) {
+			ps = conn.prepareStatement(SQL);
+			ps.setInt(1, worker.getId());
+			ps.setInt(2, worker.getPNR());
+			ps.setString(3, worker.getAddress());
+			ps.executeUpdate();
+			System.out.println("worker info updated yo");
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+			
+		}
+	}
+
+	
+	public void setBand() {
+
+		String SQL = "INSERT INTO band VALUES (19, 2, 'Prince', 'Kazaks')";
+
+		System.out.println("Test Sara set band no values, 1, abc, 192 ");
+
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(SQL)) {
+
+			disp.displayWorker(rs);
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+	}
+
+	public void setWorker() {
+
+		String SQL = "INSERT INTO worker VALUES (4, 567891, 'Matgatan 7')";
+		System.out.println(" Hut hut");
+
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(SQL)) {
+			disp.displayWorker(rs);
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+
+	}
+
+	public void setScenes() {
+
+		String SQL = "INSERT INTO scene VALUES (5, 'Big Heavy')";
+		System.out.println(" Try Setting scenes");
+
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(SQL)) {
+			disp.displayScenes(rs);
+		} catch (SQLException ex) {
+			System.out.print(ex.getMessage());
+		}
+
+	}
+
+	public void setPerformance() {
+
+		String SQL = "INSERT INTO preformance VALUES (5, '14:30:00', '15:30:00', 7)";
+		System.out.println("Try booking performance");
+
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(SQL)) {
+			disp.displayWorker(rs);
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+	}
+
+	public void setMusician() {
+
+		String SQL = "INSERT INTO musician VALUES (4, 'rockar triangeln', 'Rupert')";
+		System.out.println("Try adding musician");
+
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(SQL)) {
+			disp.displayWorker(rs);
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+	}
+
+	public void setMembers() {
+
+		String SQL = "INSERT INTO members VALUES (7, 4)";
+		System.out.println("Try adding members2");
+
+		try (Connection conn = connect();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(SQL)) {
+			disp.displayScenes(rs);
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+
+	}
+
 }

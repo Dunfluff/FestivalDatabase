@@ -54,6 +54,8 @@ public class SysoDisplay {
             System.out.println(rs.getString("SceneName")); 
         }
     }
+    
+    
 
 	public void displayBandInfo(ResultSet rs) throws SQLException {
     	rs.next();

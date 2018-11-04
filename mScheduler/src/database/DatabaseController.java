@@ -9,10 +9,13 @@ public class DatabaseController {
     private final String password = "bgm9o0w2";
     private GetInfo get;
     private SetInfo set;
+    private AdminGui gui;
 
     public DatabaseController(){
     	get = new GetInfo(url, user, password);
     	set = new SetInfo(url, user, password);
+    	gui = new AdminGui(this);
+    	gui.setScenesGui(get.getAllScenes());
     }
 
 	public void getAllScenes() {
@@ -41,6 +44,14 @@ public class DatabaseController {
 		set.setBand();
 	}
 	
+	public void insertBandIntoTables(Band band) {
+		set.insertBandIntoTables(band);
+	}
+	
+	public void insertWorkerIntoTables(Worker worker) {
+		set.insertWorkerIntoTables(worker);
+	}
+	
 	public void setWorker(String string) {
 		set.setWorker();
 	}
@@ -59,6 +70,10 @@ public class DatabaseController {
 	
 	public void setMembers(String string) {
 		set.setMembers();
+	}
+	
+	public void setScenesGUI() {
+		gui.setScenesGui(get.getAllScenes());
 	}
 }
 

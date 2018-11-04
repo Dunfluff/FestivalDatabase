@@ -16,6 +16,7 @@ public class GetInfo {
 	private String password;
 	private SysoDisplay disp;
 	private VisitorGui visitor;
+	private ArrayList<String> scenes = new ArrayList<>();
 
 	public GetInfo(String url, String user, String password){
 		this.url = url;
@@ -37,7 +38,7 @@ public class GetInfo {
 
     
     
-    public void getAllScenes() {
+    public ArrayList<String> getAllScenes() {
    	 
         String SQL = "SELECT SceneName FROM scene group by SceneName order by SceneName";
  
@@ -46,9 +47,14 @@ public class GetInfo {
                 ResultSet rs = stmt.executeQuery(SQL)) {
             // display scene information
             disp.displayScenes(rs);
+            while (rs.next()) {
+            	scenes.add(rs.getString("SceneName"));
+            }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
+        
+        return scenes;
     }
     
     public void getSceneByName(String n) {
