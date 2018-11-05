@@ -49,6 +49,7 @@ MusicianName text
 create table Members(
 BandId integer,
 MusId integer,
+primary key (BandId, MusId),
 foreign key (BandId) references Band(BandId),
 foreign key (MusId) references Musician(MusId)
 );
