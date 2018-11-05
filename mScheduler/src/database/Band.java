@@ -4,12 +4,20 @@ public class Band {
 	private int id;
 	private String name;
 	private String origin;
+	private int worker;
 	
-	public Band(int id, String name, String origin) {
+	public Band(int id, String name, String origin, int worker) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.origin = origin;
+		this.worker = worker;
+	}
+	public int getWorker() {
+		return worker;
+	}
+	public void setWorker(int worker) {
+		this.worker = worker;
 	}
 	public int getId() {
 		return id;

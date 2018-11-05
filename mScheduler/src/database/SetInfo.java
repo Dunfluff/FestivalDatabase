@@ -65,7 +65,7 @@ public class SetInfo {
 		try (Connection conn = connect()) {
 			ps = conn.prepareStatement(SQL);
 			ps.setInt(1, band.getId());
-			ps.setInt(2, 2);
+			ps.setInt(2, band.getWorker());
 			ps.setString(3, band.getName());
 			ps.setString(4, band.getOrigin());
 			ps.executeUpdate();
@@ -120,7 +120,7 @@ public class SetInfo {
 
 		PreparedStatement ps = null;
 
-		String SQL = "INSERT INTO musican" + "(musid, info, musicianname) VALUES" + "(?, ?, ?)";
+		String SQL = "INSERT INTO musician" + "(musid, info, musicianname) VALUES" + "(?, ?, ?)";
 
 		try (Connection conn = connect()) {
 			ps = conn.prepareStatement(SQL);

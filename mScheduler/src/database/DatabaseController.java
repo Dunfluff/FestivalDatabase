@@ -1,6 +1,6 @@
 package database;
 
-import java.sql.*;
+
 import java.util.*;
 
 public class DatabaseController {
@@ -9,6 +9,7 @@ public class DatabaseController {
 	private final String password = "bgm9o0w2";
 	private GetInfo get;
 	private SetInfo set;
+	
 
 	public DatabaseController() {
 		get = new GetInfo(url, user, password);
@@ -49,16 +50,20 @@ public class DatabaseController {
 
 	}
 
-	public void insertBandIntoTables(Band band) {
-		set.insertBandIntoTables(band);
+	public void insertBandIntoTables(int bandId, String bandName, String origin, String workName) {
+		int workId = get.getWorkerId(workName);
+		Band temp = new Band(bandId, bandName, origin, workId);
+		set.insertBandIntoTables(temp);
 	}
 
-	public void insertWorkerIntoTables(Worker worker) {
-		set.insertWorkerIntoTables(worker);
+	public void insertWorkerIntoTables(int workId, String workName, int workPNR, String workAddress) {
+		Worker temp = new Worker(workId, workName, workPNR, workAddress);
+		set.insertWorkerIntoTables(temp);
 	}
 
-	public void insertMusicianIntoTables(Musician musician) {
-		set.insertMusicianIntoTables(musician);
+	public void insertMusicianIntoTables(int MusId, String MusInfo, String MusName) {
+		Musician temp = new Musician (MusId, MusInfo, MusName);
+		set.insertMusicianIntoTables(temp);
 	}
 
 	public void insertMembersIntoTables(String BandName, String MusName) {
@@ -68,15 +73,14 @@ public class DatabaseController {
 		set.insertMemberIntoTables(temp);
 	}
 	
-	public void insertPerformanceIntoTables(String sceneName, String startTime, String endTime, String bandName) {
+	public void insertPerformanceIntoTables(String sceneName, String bandName, String startTime, String endTime) {
 		int sceneId = get.getSceneId(sceneName);
 		int bandId = get.getBandId(bandName);
 		Performance temp = new Performance(sceneId,  startTime, endTime,  bandId);
 		set.insertPerformanceIntoTables(temp);
 		
+		
 	}
-//	public void insertPerformanceIntoTables(Performance performance) {
-//		set.insertPerformanceIntoTables(performance);
-//	}
+
 
 }

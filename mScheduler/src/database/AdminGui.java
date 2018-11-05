@@ -278,15 +278,9 @@ public class AdminGui {
 		JButton btnSaveBand = new JButton("Save Band");
 		btnSaveBand.setBounds(66, 282, 158, 29);
 		frmMrtforsFestivalAdministration.getContentPane().add(btnSaveBand);
-		btnSaveBand.addActionListener(e ->{
-			int id = Integer.parseInt(tpBandId.getText());
-			String name = tpBandName.getText();
-			String origin = tpBandOrigin.getText();
+		btnSaveBand.addActionListener(e ->{	
 			
-			Band band = new Band(id, name, origin);
-			
-			controller.insertBandIntoTables(band);
-			
+			controller.insertBandIntoTables((Integer.parseInt(tpBandId.getText())), tpBandName.getText(), tpBandOrigin.getText(), (String)comboBandWorker.getSelectedItem());	
 			updateCombo();
 			
 		});
@@ -296,16 +290,8 @@ public class AdminGui {
 		btnSaveWorker.setBounds(399, 282, 158, 29);
 		frmMrtforsFestivalAdministration.getContentPane().add(btnSaveWorker);
 		btnSaveWorker.addActionListener(e -> {
-			int id = Integer.parseInt(tpWorkerId.getText());
-			String name = tpWorkName.getText();
-			int pnr = Integer.parseInt(tpWorkerPNR.getText());
 			
-			String address = tpWorkerAddress.getText();
-			
-			Worker worker = new Worker(id, name, pnr, address);
-			
-			controller.insertWorkerIntoTables(worker);
-			
+			controller.insertWorkerIntoTables((Integer.parseInt(tpWorkerId.getText())), tpWorkName.getText(), (Integer.parseInt(tpWorkerPNR.getText())), tpWorkerAddress.getText());	
 			updateCombo();
 			
 		});
@@ -315,30 +301,18 @@ public class AdminGui {
 		frmMrtforsFestivalAdministration.getContentPane().add(btnSavePerformance);
 		btnSavePerformance.addActionListener(e -> {
 			
-			String startTime = tpStartTime.getText();
-			String endTime = tpEndTime.getText();
-			
-			Performance performance = new Performance(sceneId, startTime, endTime, bandId);
-			
-			controller.insertPerformanceIntoTables((String)comboSceneName.getSelectedItem(), (String)comboBandName.getSelectedItem(), null, null);
-			
+			controller.insertPerformanceIntoTables((String)comboSceneName.getSelectedItem(), (String)comboBandName.getSelectedItem(), tpStartTime.getText(), tpEndTime.getText());	
 			updateCombo();
 			
 		});
+		
 		
 		JButton btnSaveMusician = new JButton("Save Musician");
 		btnSaveMusician.setBounds(45, 571, 188, 29);
 		frmMrtforsFestivalAdministration.getContentPane().add(btnSaveMusician);
 		btnSaveMusician.addActionListener(e -> {
 			
-			 int id = Integer.parseInt(tpMusicianID.getText());
-			 String info = tpMemberInfo.getText();
-			 String name = tpMemberName.getText();
-			 
-			 Musician musician = new Musician(id, info, name);
-			 
-			 controller.insertMusicianIntoTables(musician);
-			 
+			 controller.insertMusicianIntoTables((Integer.parseInt(tpMusicianID.getText())), tpMemberInfo.getText(), tpMemberName.getText());	 
 			 updateCombo();
 			
 		});
@@ -354,15 +328,6 @@ public class AdminGui {
 			updateCombo();
 				
 		});
-		
-	
-		
-		
-		
-		
-		
-		
-	
 	
 	}
 }
