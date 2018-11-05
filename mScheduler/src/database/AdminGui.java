@@ -17,22 +17,27 @@ public class AdminGui {
 	private static DatabaseController controller = new DatabaseController();
 
 	private JFrame frmMrtforsFestivalAdministration;
-	
+	private Object[] scenesStart;
+	private Object[] bandNames;
+	private Object[] workerNames;
+	private Object[] musicianNames;
 	private JTextPane tpBandId = new JTextPane();
 	private JTextPane tpBandName = new JTextPane();
 	private JTextPane tpBandOrigin = new JTextPane();
-	private JComboBox comboBandWorker = new JComboBox();
+	private JComboBox<String> comboBandWorker;
 	
 	private JTextPane tpWorkerId = new JTextPane();
+	private JTextPane tpWorkName = new JTextPane();
 	private JTextPane tpWorkerPNR = new JTextPane();
 	private JTextPane tpWorkerAddress = new JTextPane();
 	
-	private JComboBox<String> comboSceneName = new JComboBox();
-	private JComboBox comboBandName = new JComboBox();
+	private JComboBox<String> comboSceneName;
+	private JComboBox<String> comboBandName;
 	private JTextPane tpStartTime = new JTextPane();
 	private JTextPane tpEndTime = new JTextPane();
 	
-	private JComboBox comboMemberBandName = new JComboBox();
+	private JComboBox<String> comboMemberBandName;
+	private JComboBox<String> comboMemberName;
 	private JTextPane tpMemberName = new JTextPane();
 	private JTextPane tpMemberInfo = new JTextPane();
 	private JTextPane tpMusicianID = new JTextPane();
@@ -61,8 +66,19 @@ public class AdminGui {
 	 * Create the application.
 	 */
 	public AdminGui(DatabaseController controller) {
+		updateCombo();
 		initialize();
+		
 	}
+	
+	private void updateCombo() {
+		scenesStart = controller.getAllScenes().toArray();
+		bandNames = controller.getAllBands().toArray();
+		workerNames = controller.getAllWorkers().toArray();
+		musicianNames = controller.getAllMusicians().toArray();
+	}
+	
+
 
 	/**
 	 * Initialize the contents of the frame.
@@ -74,7 +90,15 @@ public class AdminGui {
 		frmMrtforsFestivalAdministration.setBounds(100, 100, 1008, 672);
 		frmMrtforsFestivalAdministration.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMrtforsFestivalAdministration.getContentPane().setLayout(null);
+
+		comboSceneName = new JComboBox(scenesStart);
+		comboBandName = new JComboBox(bandNames);
+		comboBandWorker = new JComboBox(workerNames);
+		comboMemberBandName = new JComboBox(bandNames);
+		comboMemberName = new JComboBox(musicianNames);
 		
+		
+		// All JLabels
 		JLabel lblBands = new JLabel("Bands");
 		lblBands.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblBands.setBounds(110, 56, 69, 20);
@@ -128,29 +152,43 @@ public class AdminGui {
 		lblAssignWorker.setBounds(315, 101, 132, 20);
 		frmMrtforsFestivalAdministration.getContentPane().add(lblAssignWorker);
 		
+		JLabel lblMusician = new JLabel("Musician");
+		lblMusician.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblMusician.setBounds(110, 346, 95, 20);
+		frmMrtforsFestivalAdministration.getContentPane().add(lblMusician);
+		
 		JLabel lblWorkerPNR = new JLabel("Worker PNR");
-		lblWorkerPNR.setBounds(315, 174, 104, 20);
+		lblWorkerPNR.setBounds(316, 210, 104, 20);
 		frmMrtforsFestivalAdministration.getContentPane().add(lblWorkerPNR);
 		
 		JLabel lblMembers = new JLabel("Band Name");
-		lblMembers.setBounds(15, 421, 102, 20);
+		lblMembers.setBounds(332, 424, 102, 20);
 		frmMrtforsFestivalAdministration.getContentPane().add(lblMembers);
 		
 		JLabel lblToBand = new JLabel("Address");
-		lblToBand.setBounds(315, 214, 69, 20);
+		lblToBand.setBounds(315, 246, 69, 20);
 		frmMrtforsFestivalAdministration.getContentPane().add(lblToBand);
 		
 		JLabel lblMemberName = new JLabel("Member Name");
-		lblMemberName.setBounds(15, 457, 112, 20);
+		lblMemberName.setBounds(332, 463, 112, 20);
 		frmMrtforsFestivalAdministration.getContentPane().add(lblMemberName);
 		
 		JLabel lblMembers_1 = new JLabel("Members");
 		lblMembers_1.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblMembers_1.setBounds(97, 334, 112, 20);
+		lblMembers_1.setBounds(401, 346, 112, 20);
 		frmMrtforsFestivalAdministration.getContentPane().add(lblMembers_1);
 		
+		JLabel lblName_1 = new JLabel("Name");
+		lblName_1.setBounds(15, 430, 69, 20);
+		frmMrtforsFestivalAdministration.getContentPane().add(lblName_1);
+		
+		JLabel lblAddMusician = new JLabel("Add Musician");
+		lblAddMusician.setFont(new Font("Tahoma", Font.ITALIC, 16));
+		lblAddMusician.setBounds(15, 382, 123, 20);
+		frmMrtforsFestivalAdministration.getContentPane().add(lblAddMusician);
+		
 		JLabel lblInformation = new JLabel("Information");
-		lblInformation.setBounds(15, 493, 112, 20);
+		lblInformation.setBounds(15, 466, 112, 20);
 		frmMrtforsFestivalAdministration.getContentPane().add(lblInformation);
 		
 		JLabel lblBookGig = new JLabel("Book Gig");
@@ -163,8 +201,12 @@ public class AdminGui {
 		frmMrtforsFestivalAdministration.getContentPane().add(lblBandId);
 		
 		JLabel lblMusicianId = new JLabel("Musician ID");
-		lblMusicianId.setBounds(15, 529, 82, 20);
+		lblMusicianId.setBounds(15, 505, 82, 20);
 		frmMrtforsFestivalAdministration.getContentPane().add(lblMusicianId);
+		
+		JLabel lblName = new JLabel("Name");
+		lblName.setBounds(315, 171, 69, 20);
+		frmMrtforsFestivalAdministration.getContentPane().add(lblName);
 		
 		JLabel lblWorkerId = new JLabel("Worker ID");
 		lblWorkerId.setBounds(315, 137, 81, 20);
@@ -172,27 +214,32 @@ public class AdminGui {
 		
 		JLabel lblAddMemberTo = new JLabel("Add Member To Band");
 		lblAddMemberTo.setFont(new Font("Tahoma", Font.ITALIC, 16));
-		lblAddMemberTo.setBounds(15, 370, 164, 20);
+		lblAddMemberTo.setBounds(332, 382, 164, 20);
 		frmMrtforsFestivalAdministration.getContentPane().add(lblAddMemberTo);
-	
 		
+	
+		// All combo boxes
 		comboBandWorker.setBounds(119, 243, 133, 26);
 		frmMrtforsFestivalAdministration.getContentPane().add(comboBandWorker);
 			
 		comboSceneName.setBounds(793, 127, 134, 26);
-		frmMrtforsFestivalAdministration.getContentPane().add(comboSceneName);
-		
+		frmMrtforsFestivalAdministration.getContentPane().add(comboSceneName);	
 		
 		comboBandName.setBounds(793, 168, 134, 26);
 		frmMrtforsFestivalAdministration.getContentPane().add(comboBandName);
 		
-		comboMemberBandName.setBounds(139, 418, 141, 26);
+		comboMemberBandName.setBounds(462, 418, 141, 26);
 		frmMrtforsFestivalAdministration.getContentPane().add(comboMemberBandName);
 		
-		tpWorkerPNR.setBounds(463, 165, 123, 26);
+		comboMemberName.setBounds(459, 460, 144, 26);
+		frmMrtforsFestivalAdministration.getContentPane().add(comboMemberName);
+		
+		
+		// All text panes
+		tpWorkerPNR.setBounds(462, 204, 123, 26);
 		frmMrtforsFestivalAdministration.getContentPane().add(tpWorkerPNR);
 		
-		tpWorkerAddress.setBounds(462, 214, 124, 26);
+		tpWorkerAddress.setBounds(462, 246, 124, 26);
 		frmMrtforsFestivalAdministration.getContentPane().add(tpWorkerAddress);
 		
 		tpBandId.setBounds(119, 130, 133, 26);
@@ -201,17 +248,20 @@ public class AdminGui {
 		tpBandName.setBounds(119, 165, 134, 26);
 		frmMrtforsFestivalAdministration.getContentPane().add(tpBandName);
 		
-		tpMemberName.setBounds(138, 451, 142, 26);
+		tpMemberName.setBounds(139, 424, 142, 26);
 		frmMrtforsFestivalAdministration.getContentPane().add(tpMemberName);
 		
 		tpBandOrigin.setBounds(119, 204, 133, 26);
 		frmMrtforsFestivalAdministration.getContentPane().add(tpBandOrigin);
 		
-		tpMemberInfo.setBounds(139, 487, 141, 26);
+		tpMemberInfo.setBounds(139, 463, 141, 26);
 		frmMrtforsFestivalAdministration.getContentPane().add(tpMemberInfo);
 		
 		tpWorkerId.setBounds(463, 124, 123, 26);
 		frmMrtforsFestivalAdministration.getContentPane().add(tpWorkerId);
+		
+		tpWorkName.setBounds(462, 168, 123, 26);
+		frmMrtforsFestivalAdministration.getContentPane().add(tpWorkName);
 		
 		tpEndTime.setBounds(795, 240, 132, 26);
 		frmMrtforsFestivalAdministration.getContentPane().add(tpEndTime);
@@ -219,7 +269,7 @@ public class AdminGui {
 		tpStartTime.setBounds(793, 204, 134, 26);
 		frmMrtforsFestivalAdministration.getContentPane().add(tpStartTime);
 		
-		tpMusicianID.setBounds(142, 523, 138, 26);
+		tpMusicianID.setBounds(143, 505, 138, 26);
 		frmMrtforsFestivalAdministration.getContentPane().add(tpMusicianID);
 		
 		
@@ -237,6 +287,8 @@ public class AdminGui {
 			
 			controller.insertBandIntoTables(band);
 			
+			updateCombo();
+			
 		});
 		
 		
@@ -245,12 +297,16 @@ public class AdminGui {
 		frmMrtforsFestivalAdministration.getContentPane().add(btnSaveWorker);
 		btnSaveWorker.addActionListener(e -> {
 			int id = Integer.parseInt(tpWorkerId.getText());
+			String name = tpWorkName.getText();
 			int pnr = Integer.parseInt(tpWorkerPNR.getText());
+			
 			String address = tpWorkerAddress.getText();
 			
-			Worker worker = new Worker(id, pnr, address);
+			Worker worker = new Worker(id, name, pnr, address);
 			
 			controller.insertWorkerIntoTables(worker);
+			
+			updateCombo();
 			
 		});
 		
@@ -259,29 +315,54 @@ public class AdminGui {
 		frmMrtforsFestivalAdministration.getContentPane().add(btnSavePerformance);
 		btnSavePerformance.addActionListener(e -> {
 			
+			String startTime = tpStartTime.getText();
+			String endTime = tpEndTime.getText();
+			
+			Performance performance = new Performance(sceneId, startTime, endTime, bandId);
+			
+			controller.insertPerformanceIntoTables((String)comboSceneName.getSelectedItem(), (String)comboBandName.getSelectedItem(), null, null);
+			
+			updateCombo();
 			
 		});
 		
+		JButton btnSaveMusician = new JButton("Save Musician");
+		btnSaveMusician.setBounds(45, 571, 188, 29);
+		frmMrtforsFestivalAdministration.getContentPane().add(btnSaveMusician);
+		btnSaveMusician.addActionListener(e -> {
+			
+			 int id = Integer.parseInt(tpMusicianID.getText());
+			 String info = tpMemberInfo.getText();
+			 String name = tpMemberName.getText();
+			 
+			 Musician musician = new Musician(id, info, name);
+			 
+			 controller.insertMusicianIntoTables(musician);
+			 
+			 updateCombo();
+			
+		});
+		
+		
+		
 		JButton btnSaveMember = new JButton("Save Member");
-		btnSaveMember.setBounds(45, 571, 188, 29);
+		btnSaveMember.setBounds(442, 571, 143, 29);
 		frmMrtforsFestivalAdministration.getContentPane().add(btnSaveMember);
 		btnSaveMember.addActionListener(e -> {
 			
+			controller.insertMembersIntoTables((String)comboMemberBandName.getSelectedItem(),(String) comboMemberName.getSelectedItem());
+			updateCombo();
+				
 		});
 		
-		
-		
 	
 		
 		
+		
+		
+		
+		
 	
-	}
 	
-	public void setScenesGui(ArrayList<String> list) {
-		String hold = "test";
-		for(int i=0; i<list.size(); i++) {
-			hold = list.get(i);
-			comboSceneName.addItem(hold);
-		}
 	}
 }

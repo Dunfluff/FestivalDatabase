@@ -17,6 +17,9 @@ public class GetInfo {
 	private SysoDisplay disp;
 	private VisitorGui visitor;
 	private ArrayList<String> scenes = new ArrayList<>();
+	private ArrayList<String> bands = new ArrayList<>();
+	private ArrayList<String> workers = new ArrayList<>();
+	private ArrayList<String> musician = new ArrayList<>();
 
 	public GetInfo(String url, String user, String password){
 		this.url = url;
@@ -46,16 +49,67 @@ public class GetInfo {
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(SQL)) {
             // display scene information
-            disp.displayScenes(rs);
             while (rs.next()) {
             	scenes.add(rs.getString("SceneName"));
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
         return scenes;
     }
+    
+    
+    public ArrayList<String> getAllBands() {
+    	
+    	String SQL = "SELECT bandName FROM band group by bandName order by bandName";
+    	
+    	try (Connection conn = connect();
+    			Statement stmt = conn.createStatement();
+    			ResultSet rs = stmt.executeQuery(SQL)) {
+    		while (rs.next()) {
+    			bands.add(rs.getString("bandName"));
+    		} 
+    	} catch (SQLException ex) {
+    		System.out.println(ex.getMessage());
+    	}
+    	return bands;
+    }
+    
+    
+    public ArrayList<String> getAllWorkers() {
+    	
+    	String SQL = "SELECT workName FROM worker group by workName order by workName";
+    	
+    	try (Connection conn = connect();
+    			Statement stmt = conn.createStatement();
+    			ResultSet rs = stmt.executeQuery(SQL)) {
+    		while (rs.next()) {
+    			workers.add(rs.getString("workName"));
+    		}
+    	} catch (SQLException ex) {
+    			System.out.println(ex.getMessage());
+    		}
+    	return workers;
+    }
+    
+    
+    public ArrayList<String> getAllMusicians() {
+    	
+    	String SQL = "SELECT musicianName FROM musician group by musicianName order by musicianName";
+    	
+    	try (Connection conn = connect();
+    			Statement stmt = conn.createStatement();
+    			ResultSet rs = stmt.executeQuery(SQL)) {
+    		while (rs.next()) {
+    			musician.add(rs.getString("musicianName"));
+    		}
+    	} catch (SQLException ex) {
+    			System.out.println(ex.getMessage());
+    		}
+    	return musician;
+    }
+    
+    
     
     public void getSceneByName(String n) {
    	 
@@ -72,6 +126,67 @@ public class GetInfo {
         }
     }
     
+    
+    public int getBandId(String bName) {
+      	 
+        String SQL = "SELECT bandId from Band where bandName = ?";
+        
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+            pstmt.setString(1, bName);
+            System.out.println(pstmt);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            System.out.println(rs.getInt("bandId") + "id test");
+            return rs.getInt("bandId");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+		return 0;
+
+    }
+    
+
+    public int getMusId(String mName) {
+     	 
+        String SQL = "SELECT musId from Musician where musicianName = ?";
+        
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+            pstmt.setString(1, mName);
+            System.out.println(pstmt);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            System.out.println(rs.getInt("musId") + "id test");
+            return rs.getInt("musId");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+		return 0;
+
+    }
+    
+    
+    public int getSceneId(String sName) {
+    	 
+        String SQL = "SELECT sceneId from scene where sceneName = ?";
+        
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+            pstmt.setString(1, sName);
+            System.out.println(pstmt);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            System.out.println(rs.getInt("sceneId") + "id test");
+            return rs.getInt("sceneId");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+		return 0;
+
+    }
+    
+    
     public void getBandTimesByName(String n) {
    	 
         String SQL = "SELECT * FROM preformance join band on preformance.BandId=band.BandId join scene on preformance.SceneId=Scene.SceneId where BandName=? order by StartTime";
@@ -85,6 +200,7 @@ public class GetInfo {
             System.out.println(ex.getMessage());
         }
     }
+    
 
 	public void getBandInfoByName(String string) {
 		
@@ -100,6 +216,7 @@ public class GetInfo {
             System.out.println(ex.getMessage());
         }
 	}
+	
 
 	public void getMemberInfoByName(String string) {
 			

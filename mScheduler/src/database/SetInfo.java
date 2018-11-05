@@ -54,12 +54,11 @@ public class SetInfo {
 	}
 
 	public void insertBandIntoTables(Band band) {
-		
 
 		PreparedStatement ps = null;
 
 		String SQL = "INSERT INTO band" + "(bandid, workid, bandname, origin) VALUES" + "(?, ?, ?, ?)";
-		
+
 		System.out.println(band.getName());
 		System.out.println(band.getOrigin());
 
@@ -76,115 +75,81 @@ public class SetInfo {
 		}
 
 	}
-	
+
 	public void insertWorkerIntoTables(Worker worker) {
-		
+
 		PreparedStatement ps = null;
-		
-		String SQL = "INSERT INTO worker" + "(workid, pernum, addr) VALUES" + "(?, ?, ?)";
-		
+
+		String SQL = "INSERT INTO worker" + "(workid, workname, pernum, addr) VALUES" + "(?, ?, ?, ?)";
+
 		try (Connection conn = connect()) {
 			ps = conn.prepareStatement(SQL);
 			ps.setInt(1, worker.getId());
-			ps.setInt(2, worker.getPNR());
-			ps.setString(3, worker.getAddress());
+			ps.setString(2, worker.getName());
+			ps.setInt(3, worker.getPNR());
+			ps.setString(4, worker.getAddress());
 			ps.executeUpdate();
 			System.out.println("worker info updated yo");
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
-			
+
 		}
 	}
-
 	
-	public void setBand() {
+	public void insertPerformanceIntoTables(Performance performance) {
 
-		String SQL = "INSERT INTO band VALUES (19, 2, 'Prince', 'Kazaks')";
+		PreparedStatement ps = null;
 
-		System.out.println("Test Sara set band no values, 1, abc, 192 ");
+		String SQL = "INSERT INTO preformance" + "(sceneid, starttime, endtime, bandid) VALUES" + "(?, ?, ?, ?)";
 
-		try (Connection conn = connect();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(SQL)) {
-
-			disp.displayWorker(rs);
-
+		try (Connection conn = connect()) {
+			ps = conn.prepareStatement(SQL);
+			ps.setInt(1, performance.getSceneId());
+			ps.setString(2, performance.getStartTime());
+			ps.setString(3, performance.getEndTime());
+			ps.setInt(4, performance.getBandId());
+			ps.executeUpdate();
+			System.out.println("performance info updated yo");
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
+
 		}
 	}
 
-	public void setWorker() {
+	public void insertMusicianIntoTables(Musician musician) {
 
-		String SQL = "INSERT INTO worker VALUES (4, 567891, 'Matgatan 7')";
-		System.out.println(" Hut hut");
+		PreparedStatement ps = null;
 
-		try (Connection conn = connect();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(SQL)) {
-			disp.displayWorker(rs);
+		String SQL = "INSERT INTO musican" + "(musid, info, musicianname) VALUES" + "(?, ?, ?)";
+
+		try (Connection conn = connect()) {
+			ps = conn.prepareStatement(SQL);
+			ps.setInt(1, musician.getId());
+			ps.setString(2, musician.getInfo());
+			ps.setString(3, musician.getName());
+			ps.executeUpdate();
+			System.out.println("musician info updated yey");
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
-		}
 
-	}
-
-	public void setScenes() {
-
-		String SQL = "INSERT INTO scene VALUES (5, 'Big Heavy')";
-		System.out.println(" Try Setting scenes");
-
-		try (Connection conn = connect();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(SQL)) {
-			disp.displayScenes(rs);
-		} catch (SQLException ex) {
-			System.out.print(ex.getMessage());
-		}
-
-	}
-
-	public void setPerformance() {
-
-		String SQL = "INSERT INTO preformance VALUES (5, '14:30:00', '15:30:00', 7)";
-		System.out.println("Try booking performance");
-
-		try (Connection conn = connect();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(SQL)) {
-			disp.displayWorker(rs);
-		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
 		}
 	}
 
-	public void setMusician() {
+	public void insertMemberIntoTables(Member member) {
 
-		String SQL = "INSERT INTO musician VALUES (4, 'rockar triangeln', 'Rupert')";
-		System.out.println("Try adding musician");
-
-		try (Connection conn = connect();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(SQL)) {
-			disp.displayWorker(rs);
+		PreparedStatement ps = null;
+		System.out.println(member.getBandId() + " " + member.getMusId());
+		String SQL = "INSERT INTO members" + "(bandid, musid) VALUES" + "( ?, ?)";
+		try (Connection conn = connect()) {
+			ps = conn.prepareStatement(SQL);
+			ps.setInt(1, member.getBandId());
+			ps.setInt(2, member.getMusId());
+			ps.executeUpdate();
+			System.out.println("member info updated hoho");
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
+
 		}
-	}
-
-	public void setMembers() {
-
-		String SQL = "INSERT INTO members VALUES (7, 4)";
-		System.out.println("Try adding members2");
-
-		try (Connection conn = connect();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(SQL)) {
-			disp.displayScenes(rs);
-		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
-		}
-
 	}
 
 }

@@ -7,13 +7,12 @@ public class Performance {
 	private String startTime;
 	private String endTime;
 	
-	public Performance(int sceneId, int bandId, String startTime, String endTime) {
+	public Performance(int sceneId,  String startTime, String endTime, int bandId) {
 		super();
 		this.sceneId = sceneId;
-		this.bandId = bandId;
 		this.startTime = startTime;
 		this.endTime = endTime;
-		
+		this.bandId = bandId;
 	}
 	
 	public int getSceneId() {

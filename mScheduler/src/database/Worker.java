@@ -5,12 +5,14 @@ public class Worker {
 	private int id;
 	private int PNR;
 	private String address;
+	private String name;
 	
-	public Worker(int id, int PNR, String address) {
+	public Worker(int id, String name, int PNR, String address) {
 		super();
 		this.id = id;
 		this.PNR = PNR;
 		this.address = address;
+		this.name = name;
 	}
 	
 	public int getId() {
@@ -18,6 +20,14 @@ public class Worker {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 	public int getPNR() {
 		return PNR;
