@@ -58,7 +58,6 @@ foreign key (MusId) references Musician(MusId)
 insert into scene(SceneId, SceneName) values(1,'Scene:1');
 insert into scene(SceneId, SceneName) values(2,'Scene:2');
 insert into scene(SceneId, SceneName) values(3,'Scene:3');
-insert into scene(SceneId, SceneName) values(4,'Scene:4');
 insert into worker(WorkId, WorkName, PerNum, addr) values(1, 'Hans Hansson', 123456,'Address test 1');
 insert into worker(WorkId, WorkName, PerNum, addr) values(2, 'Sven Svensson', 123456,'Address test 2');
 insert into worker(WorkId, WorkName, PerNum, addr) values(3, 'Eva Evasson', 123456,'Address test 3');
