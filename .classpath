@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="GuiTest/src"/>
+	<classpathentry kind="src" path="JavaFX2/src"/>
+	<classpathentry kind="src" path="JavaFXDemo/src"/>
+	<classpathentry kind="src" path="mScheduler/src"/>
+	<classpathentry kind="src" path="TestingGui/src"/>
+	<classpathentry kind="lib" path="mScheduler/postgresql-42.2.5.jar"/>
+	<classpathentry kind="output" path="mScheduler/bin"/>
+</classpath>

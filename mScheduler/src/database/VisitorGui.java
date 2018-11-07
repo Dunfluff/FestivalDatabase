@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
-public class VisitorGui {
+public class VisitorGui{
 	String newLine = System.getProperty("line.separator");
 	
 	private static DatabaseController controller = new DatabaseController();
@@ -32,22 +32,16 @@ public class VisitorGui {
 	private JComboBox<String> comboChooseScene;
 	private JComboBox<String> comboChooseBand;
 	private JComboBox<String> comboBandMembers;
-	
-	
-	 public String displayScene(ResultSet rs) throws SQLException {
-		 
-	    	rs.next();
-	    	scenes = (rs.getString("SceneName") + newLine
-	                + rs.getString("BandName") +  "\t"
-	                + rs.getString("StartTime") + "-" + rs.getString("EndTime"));
-	        while (rs.next()) {
-	           scenes = (rs.getString("BandName") +  "\t"
-	                     + rs.getString("StartTime") + "-" + rs.getString("EndTime"));
-	           
-	        }
-	        
-	        return scenes;
-	    }
+
+	private JTextPane tpBandName;
+
+	private JTextPane sceneInfo;
+
+	private JTextPane tpBandCountry;
+
+	private JTextPane tpMemberInfo;
+
+	private JTextPane tpBandScene;
 
 	/**
 	 * Launch the application.
@@ -71,12 +65,14 @@ public class VisitorGui {
 	public VisitorGui(DatabaseController controller) {	
 		updateCombo();
 		initialize();
+		controller.chooseScene((String)comboChooseScene.getSelectedItem(), sceneInfo);
+		controller.chooseBand((String)comboChooseBand.getSelectedItem(), tpBandName, tpBandCountry, comboBandMembers);
+		
 	}
 	
 	private void updateCombo() {
 		scenesStart = controller.getAllScenes().toArray();
 		bandNames = controller.getAllBands().toArray();
-		memberNames = controller.getAllWorkers().toArray();
 		
 	}
 	
@@ -132,31 +128,33 @@ public class VisitorGui {
 		frmMrtforsFestival.getContentPane().add(lblBandName);
 		
 		JLabel lblMembers = new JLabel("Members");
-		lblMembers.setBounds(422, 494, 69, 20);
+		lblMembers.setBounds(422, 458, 69, 20);
 		frmMrtforsFestival.getContentPane().add(lblMembers);
 		
 		JLabel lblCountry = new JLabel("Country");
 		lblCountry.setBounds(422, 422, 69, 20);
 		frmMrtforsFestival.getContentPane().add(lblCountry);
 		
-		JLabel lblPlayingAt = new JLabel("Playing at");
-		lblPlayingAt.setBounds(422, 458, 69, 20);
-		frmMrtforsFestival.getContentPane().add(lblPlayingAt);
-		
 		JLabel lblMemberFunFact = new JLabel("Member Fun Fact");
-		lblMemberFunFact.setBounds(419, 530, 145, 20);
+		lblMemberFunFact.setBounds(422, 494, 145, 20);
 		frmMrtforsFestival.getContentPane().add(lblMemberFunFact);
 
 		// All combo boxes
 		
 		comboChooseBand.setBounds(151, 383, 186, 26);
 		frmMrtforsFestival.getContentPane().add(comboChooseBand);
+		comboChooseBand.setName("comboChooseBand");
+		comboChooseBand.addActionListener(e ->{	controller.chooseBand((String)comboChooseBand.getSelectedItem(), tpBandName, tpBandCountry, comboBandMembers);});
 		
 		comboChooseScene.setBounds(151, 143, 168, 26);
 		frmMrtforsFestival.getContentPane().add(comboChooseScene);
-	
-		comboBandMembers.setBounds(551, 491, 186, 26);
+		comboChooseScene.setName("comboChooseScene");
+		comboChooseScene.addActionListener(e ->{	controller.chooseScene((String)comboChooseScene.getSelectedItem(), sceneInfo);});
+		
+		comboBandMembers.setBounds(551, 452, 186, 26);
 		frmMrtforsFestival.getContentPane().add(comboBandMembers);
+		comboBandMembers.setName("comboBandMembers");
+		comboBandMembers.addActionListener(e ->{controller.chooseMember((String)comboBandMembers.getSelectedItem(), tpMemberInfo);});
 		
 		
 //		tableSchedule = new JTable();
@@ -164,34 +162,52 @@ public class VisitorGui {
 //		frmMrtforsFestival.getContentPane().add(tableSchedule);
 		
 		// All text panes 
-		JTextPane tpBandName = new JTextPane();
+		tpBandName = new JTextPane();
 		tpBandName.setEditable(false);
 		tpBandName.setBounds(551, 380, 186, 26);
 		frmMrtforsFestival.getContentPane().add(tpBandName);
 		
-		JTextPane textPane_1 = new JTextPane();
-		textPane_1.setBounds(658, 431, -4, 26);
-		frmMrtforsFestival.getContentPane().add(textPane_1);
+		sceneInfo = new JTextPane();
+		sceneInfo.setBounds(422, 143, 300, 180);
+		frmMrtforsFestival.getContentPane().add(sceneInfo);
 		
-		JTextPane tpBandCountry = new JTextPane();
+		tpBandCountry = new JTextPane();
 		tpBandCountry.setEditable(false);
 		tpBandCountry.setBounds(551, 416, 186, 26);
 		frmMrtforsFestival.getContentPane().add(tpBandCountry);
 		
-		JTextPane tpMemberInfo = new JTextPane();
-		tpMemberInfo.setEditable(true);
-		tpMemberInfo.setBounds(551, 530, 188, 26);
+		tpMemberInfo = new JTextPane();
+		tpMemberInfo.setEditable(false);
+		tpMemberInfo.setBounds(551, 491, 186, 26);
 		frmMrtforsFestival.getContentPane().add(tpMemberInfo);
 		
-		JTextPane tpBandScene = new JTextPane();
-		tpBandScene.setEditable(false);
-		tpBandScene.setBounds(551, 452, 186, 26);
-		frmMrtforsFestival.getContentPane().add(tpBandScene);
+
 		frmMrtforsFestival.setBackground(Color.PINK);
 		frmMrtforsFestival.setTitle("M\u00F6rtfors Festival");
 		frmMrtforsFestival.setBounds(100, 100, 1040, 706);
 		frmMrtforsFestival.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
 	}
+
+//	@Override
+//	public void actionPerformed(ActionEvent e) {
+//		System.out.println(e.getActionCommand());
+//		JComboBox box = (JComboBox) e.getSource();
+//		switch (box.getName()) {
+//		case "comboChooseBand":
+//			controller.chooseBand((String)box.getSelectedItem(), tpBandName, tpBandCountry, comboBandMembers);
+//			
+//		case "comboBandMembers":
+//			controller.chooseMember((String)box.getSelectedItem(), tpMemberInfo);
+//			
+//		case "comboChooseScene":
+//			controller.chooseScene((String)box.getSelectedItem(), sceneInfo);
+//			
+//		}
+//			
+//		
+//	}
 
 	
 	

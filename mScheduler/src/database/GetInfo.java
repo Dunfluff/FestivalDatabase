@@ -9,12 +9,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTextPane;
+
 public class GetInfo {
 
 	private String url;
 	private String user;
 	private String password;
-	private SysoDisplay disp;
 	private ArrayList<String> scenes = new ArrayList<>();
 	private ArrayList<String> bands = new ArrayList<>();
 	private ArrayList<String> workers = new ArrayList<>();
@@ -24,7 +25,6 @@ public class GetInfo {
 		this.url = url;
 		this.user = user;
 		this.password = password;
-		disp = new SysoDisplay();
 	}
 
 	/**
@@ -102,18 +102,27 @@ public class GetInfo {
 		return musician;
 	}
 
-	public void getSceneByName(String n) {
-
+	public void getSceneByName(String n, JTextPane sceneInfo) {
+		String newLine = System.getProperty("line.separator");
+		StringBuilder sb = new StringBuilder();
 		String SQL = "SELECT * FROM preformance join band on preformance.BandId=band.BandId join scene on preformance.SceneId=scene.SceneId where SceneName=? order by StartTime";
-
 		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(SQL)) {
 
 			pstmt.setString(1, n);
 			ResultSet rs = pstmt.executeQuery();
-			disp.displayScene(rs);
+			
+			rs.next();
+	    	sb.append(rs.getString("BandName") +  "\t"
+	                + rs.getString("StartTime") + "-" + rs.getString("EndTime"));
+	        while (rs.next()) {
+	            sb.append(newLine + rs.getString("BandName") +  "\t"
+	                     + rs.getString("StartTime") + "-" + rs.getString("EndTime"));
+	        }
+			sceneInfo.setText(sb.toString());
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		}
+		if(sb.length() == 0)sceneInfo.setText("No bands booked");
 	}
 
 	public int getBandId(String bName) {
@@ -191,28 +200,35 @@ public class GetInfo {
 	public void getBandTimesByName(String n) {
 
 		String SQL = "SELECT * FROM preformance join band on preformance.BandId=band.BandId join scene on preformance.SceneId=Scene.SceneId where BandName=? order by StartTime";
-		System.out.println("test1");
 		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(SQL)) {
 			pstmt.setString(1, n);
 			ResultSet rs = pstmt.executeQuery();
-			disp.displayBandTimes(rs);
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		}
 	}
 
-	public void getBandInfoByName(String string) {
-
+	public Band getBandInfoByName(String string) {
+		Band band = new Band();
 		String SQL = "SELECT * FROM members join band on members.BandID = band.BandID join musician on members.MusId = musician.MusId where BandName=?";
 
 		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(SQL)) {
 
 			pstmt.setString(1, string);
 			ResultSet rs = pstmt.executeQuery();
-			disp.displayBandInfo(rs);
+		    	rs.next();
+		    	band.setName(rs.getString("BandName"));
+		    	band.setOrigin(rs.getString("origin"));
+		    	band.setMembers(rs.getString("MusicianName"));
+		        while (rs.next()) {
+		        	band.setMembers(rs.getString("MusicianName"));
+		        }
+		        
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		}
+		
+		return band;
 	}
 
 	public void getMemberInfoByName(String string) {
@@ -223,11 +239,25 @@ public class GetInfo {
 
 			pstmt.setString(1, string);
 			ResultSet rs = pstmt.executeQuery();
-			disp.displayMusicianInfo(rs);
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		}
 
+	}
+
+	public String getMemberFunInfoByName(String selectedItem) {
+		String SQL = "SELECT Info FROM  musician where MusicianName=?";
+
+		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+			pstmt.setString(1, selectedItem);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			return rs.getString("Info");
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+		return null;
 	}
 
 }
