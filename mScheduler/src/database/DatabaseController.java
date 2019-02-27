@@ -3,12 +3,16 @@ package database;
 
 import java.util.*;
 
+import javax.swing.JComboBox;
+import javax.swing.JTextPane;
+
 public class DatabaseController {
 	private final String url = "jdbc:postgresql://pgserver.mah.se/mscheduler";
 	private final String user = "ai0923";
 	private final String password = "bgm9o0w2";
 	private GetInfo get;
 	private SetInfo set;
+	private String oldSelect;
 	
 
 	public DatabaseController() {
@@ -30,10 +34,6 @@ public class DatabaseController {
 
 	public ArrayList<String> getAllMusicians() {
 		return get.getAllMusicians();
-	}
-
-	public void getSceneByName(String string) {
-		get.getSceneByName(string);
 	}
 
 	public void getBandTimesByName(String string) {
@@ -79,6 +79,31 @@ public class DatabaseController {
 		Performance temp = new Performance(sceneId,  startTime, endTime,  bandId);
 		set.insertPerformanceIntoTables(temp);
 		
+		
+	}
+
+	public void chooseBand(String selectedItem, JTextPane tpBandName, JTextPane tpBandCountry,
+			JComboBox<String> comboBandMembers) {
+		Band band = get.getBandInfoByName(selectedItem);
+		tpBandName.setText(band.getName());
+		tpBandCountry.setText(band.getOrigin());
+		comboBandMembers.removeAllItems();
+		for(String s : band.getMembers()) {
+			comboBandMembers.addItem(s);
+		}
+	}
+
+	public void chooseMember(String selectedItem, JTextPane tpMemberInfo) {
+		if(selectedItem != oldSelect && selectedItem != null) {
+			tpMemberInfo.setText(get.getMemberFunInfoByName(selectedItem));
+			oldSelect = selectedItem;
+		}
+		
+		
+	}
+
+	public void chooseScene(String selectedItem, JTextPane sceneInfo) {
+			get.getSceneByName(selectedItem, sceneInfo);
 		
 	}
 

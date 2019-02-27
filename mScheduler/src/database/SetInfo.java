@@ -14,7 +14,6 @@ public class SetInfo {
 	private String user;
 	private String password;
 	private int[] nextId;
-	private SysoDisplay disp;
 
 	public SetInfo(String url, String user, String password) {
 		this.url = url;
